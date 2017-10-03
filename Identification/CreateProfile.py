@@ -30,12 +30,12 @@ OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 """
 
+
 import IdentificationServiceHttpClientHelper
 import sys
 
 def create_profile(subscription_key, locale):
     """Creates a profile on the server.
-
     Arguments:
     subscription_key -- the subscription key string
     locale -- the locale string

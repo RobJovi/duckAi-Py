@@ -46,7 +46,8 @@ def get_profile(subscription_key, profile_id):
     
     profile = helper.get_profile(profile_id)
     
-    print('Profile ID = {0}\nLocale = {1}\nEnrollments Speech Time = {2}\nRemaining Enrollment Time = {3}\nCreated = {4}\nLast Action = {5}\nEnrollment Status = {6}\n'.format(
+    print('Profile Name = {0}\nProfile ID = {1}\nLocale = {2}\nEnrollments Speech Time = {3}\nRemaining Enrollment Time = {4}\nCreated = {5}\nLast Action = {6}\nEnrollment Status = {7}\n'.format(
+        profile._profile_name,
         profile._profile_id,
         profile._locale,
         profile._enrollment_speech_time,

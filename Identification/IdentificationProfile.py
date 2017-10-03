@@ -32,7 +32,6 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 class IdentificationProfile:
     """This class encapsulates a user profile."""
-
     _PROFILE_ID = 'identificationProfileId'
     _LOCALE = 'locale'
     _ENROLLMENT_SPEECH_TIME = 'enrollmentSpeechTime'
@@ -54,6 +53,7 @@ class IdentificationProfile:
         self._created_date_time = response.get(self._CREATED_DATE_TIME, None)
         self._last_action_date_time = response.get(self._LAST_ACTION_DATE_TIME, None)
         self._enrollment_status = response.get(self._ENROLLMENT_STATUS, None)
+
 
     def get_profile_id(self):
         """Returns the profile ID of the user"""
