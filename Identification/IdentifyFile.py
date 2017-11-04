@@ -29,7 +29,7 @@ LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
 OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 """
-
+# 138d9391-d3e7-4cfd-af40-e524417c1d26
 import IdentificationServiceHttpClientHelper
 import sys
 
@@ -49,7 +49,6 @@ def identify_file(subscription_key, file_path, force_short_audio, profile_ids):
         file_path, profile_ids,
         force_short_audio.lower() == "true")
 
-    print('Identified  Speaker = {0}'.format(identification_response.get_identified_profile_id()))
     print('Confidence = {0}'.format(identification_response.get_confidence()))
 
 if __name__ == "__main__":

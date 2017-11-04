@@ -44,6 +44,7 @@ class IdentificationResponse:
         """
         self._identified_profile_id = response.get(self._IDENTIFIED_PROFILE_ID, None)
         self._confidence = response.get(self._CONFIDENCE, None)
+   
 
     def get_identified_profile_id(self):
         """Returns the identified profile ID"""

@@ -32,7 +32,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 import IdentificationServiceHttpClientHelper
 import sys
-
+subscriptionKey = "ad32b1eb65614fae8c93c622658bc39c"
 def print_all_profiles(subscription_key):
     """Print all the profiles for the given subscription key.
 
@@ -60,6 +60,6 @@ if __name__ == "__main__":
     if len(sys.argv) < 2:
         print('Usage: python PrintAllProfiles.py <subscription_key>')
         print('\t<subscription_key> is the subscription key for the service')
-        sys.exit('Error: Incorrect Usage.')
+        #sys.exit('Error: Incorrect Usage.')
 
-    print_all_profiles(sys.argv[1])
+    print_all_profiles(subscriptionKey)

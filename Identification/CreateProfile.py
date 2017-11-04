@@ -33,24 +33,35 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 import IdentificationServiceHttpClientHelper
 import sys
+import json
 
-def create_profile(subscription_key, locale):
-    """Creates a profile on the server.
-    Arguments:
-    subscription_key -- the subscription key string
-    locale -- the locale string
-    """
-    helper = IdentificationServiceHttpClientHelper.IdentificationServiceHttpClientHelper(
-        subscription_key)
+creationMsg = "profileId"
 
-    creation_response = helper.create_profile(locale)
+class CreateProfile:
+    def __init__(self, profileId):
+        self.profileId = None
 
-    print('Profile ID = {0}'.format(creation_response.get_profile_id()))
+    def create_profile(self, subscription_key, locale):
+        """Creates a profile on the server.
+        Arguments:
+        subscription_key -- the subscription key string
+        locale -- the locale string
+        """
+        helper = IdentificationServiceHttpClientHelper.IdentificationServiceHttpClientHelper(
+            subscription_key)
+
+        creation_response = helper.create_profile(locale)
+
+        self.profileId = '{0}'.format(creation_response.get_profile_id())
+        
+        return creationMsg
+        print(creationMsg)
 
 if __name__ == "__main__":
-    if len(sys.argv) < 2:
+    if len(sys.argv) < 3:
         print('Usage: python CreateProfile.py <subscription_key>')
         print('\t<subscription_key> is the subscription key for the service')
-        sys.exit('Error: Incorrect Usage.')
+        #sys.exit('Error: Incorrect Usage.')
 
     create_profile(sys.argv[1], 'en-us')
+

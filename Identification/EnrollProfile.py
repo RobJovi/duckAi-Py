@@ -48,7 +48,7 @@ def enroll_profile(subscription_key, profile_id, file_path, force_short_audio):
     enrollment_response = helper.enroll_profile(
         profile_id,
         file_path,
-        force_short_audio.lower() == "true")
+        force_short_audio.lower() == "false")
 
     print('Total Enrollment Speech Time = {0}'.format(enrollment_response.get_total_speech_time()))
     print('Remaining Enrollment Time = {0}'.format(enrollment_response.get_remaining_speech_time()))

@@ -30,6 +30,9 @@ OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 """
 import sys
+sys.path.append('../')
+
+#from main import name
 
 if sys.version_info[0] < 3:
     raise Exception("Python 3 or a more recent version is required.")
@@ -105,9 +108,9 @@ class IdentificationServiceHttpClientHelper:
         """
         try:
             # Prepare the request
+            print(self._IDENTIFICATION_PROFILES_URI)
             request_url = '{0}/{1}'.format(
-                self._IDENTIFICATION_PROFILES_URI,
-                profile_id)
+                self._IDENTIFICATION_PROFILES_URI, profile_id)
             
             # Send the request
             res, message = self._send_request(
@@ -115,7 +118,7 @@ class IdentificationServiceHttpClientHelper:
                 self._BASE_URI,
                 request_url,
                 self._JSON_CONTENT_HEADER_VALUE)
-        
+            print()
             if res.status == self._STATUS_OK:
                 # Parse the response body
                 profile_raw = json.loads(message)
@@ -136,14 +139,10 @@ class IdentificationServiceHttpClientHelper:
         try:
             # Prepare the body of the message
             body = json.dumps({'locale': '{0}'.format(locale)})
+            print(body)
 
             # Send the request
-            res, message = self._send_request(
-                'POST',
-                self._BASE_URI,
-                self._IDENTIFICATION_PROFILES_URI,
-                self._JSON_CONTENT_HEADER_VALUE,
-                body)
+            res, message = self._send_request('POST', self._BASE_URI, self._IDENTIFICATION_PROFILES_URI, self._JSON_CONTENT_HEADER_VALUE, body)
 
             if res.status == self._STATUS_OK:
                 # Parse the response body
