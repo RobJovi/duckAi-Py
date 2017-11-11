@@ -8,6 +8,9 @@ import datetime
 # Importing Flask
 from flask import Flask, render_template, request, jsonify, redirect, url_for
 import pymongo
+#Socket IO
+from flask_socketio import SocketIO
+#Import Mongo
 from pymongo import MongoClient
 # Importing Local Py Files
 from recordVoice import *
@@ -19,6 +22,8 @@ from IdentificationServiceHttpClientHelper import IdentificationServiceHttpClien
 filePath = "/Users/txt-19/Desktop/duckAi-py/audioRecorder/"
 
 app = Flask(__name__)
+app.config['SECRET_KEY'] = 'secret!'
+socketio = SocketIO(app)
 
 # Connecting to DB
 connection = pymongo.MongoClient('ds119223.mlab.com', 19223)
@@ -125,10 +130,12 @@ def enrollVoice():
 		# 	}
 		# 	db.users.insert(userData)
 		# 	return str(userData)
-		return render_template('recordVoice.html', data=data, numberOfTimesEnrolled = "You have to enroll this amount of time: " + str(numberOfTimesEnrolled) + " times!", recordingUserAudio = "Recording User Audio = " + str(recordingAudio))
+
+		return render_template('recordVoice.html', data=data, numberOfTimesEnrolled = "You have to enroll this amount of time: " + str(numberOfTimesEnrolled) + " times", recordingUserAudio = "Recording User Audio = " + str(recordingAudio))
 		
 	else:
-		return render_template('recordVoice.html', data=data, numberOfTimesEnrolled = "You have to enroll this amount of time: " + str(numberOfTimesEnrolled) + " times!", recordingUserAudio = "Recording User Audio = " + str(recordingAudio))
+		#return jsonify(numberOfTimesEnrolled=numberOfTimesEnrolled)
+		return render_template('recordVoice.html', data=data, numberOfTimesEnrolled = "You have to enroll this amount of time: " + str(numberOfTimesEnrolled) + " times", recordingUserAudio = "Recording User Audio = " + str(recordingAudio))
 
 # This is the page were we get the user's Name
 @app.route('/enrollUserInfo', methods=['POST', 'GET'])
@@ -199,3 +206,5 @@ def signup():
 
 if __name__ == "__main__":
 	app.run(debug=True)
+
+

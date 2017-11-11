@@ -1,0 +1,49 @@
+@import url('https://fonts.googleapis.com/css?family=Comfortaa');
+
+body{
+	font-family: 'Comfortaa', cursive;
+	margin: 0;
+}
+
+
+/* Global Styles s*/
+.pageTitleBar{
+	text-align: center;
+	border-bottom: 1px solid gray;
+}
+h1{
+	text-align: center;
+}
+
+
+h3{
+	text-align: center;
+}
+#step1{
+	text-align: center;
+}
+/* Index Page Styles */
+.enrollButton{
+	display:block;
+	margin: auto;
+	padding: 10px;
+	font-size: 16px;
+	background-color: #3cf;
+	text-align: center;
+	color: #fff;
+	border: 1px solid #3cf;
+	border-radius: 5px;
+}
+
+#enrollButton:hover{
+	cursor: pointer;
+	background-color: #6cf;
+}
+
+
+#introP{
+	padding: 5px;
+	text-align: center;
+	display: block;
+	margin: auto;
+}
