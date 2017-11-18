@@ -6,7 +6,7 @@ from array import array
 global audioFileName
 
 def recordVoice():
-    pickle_in = open("file_number.pickle","rb")
+    pickle_in = open("/Users/txt-19/Desktop/duckAi-py/audioRecorder/file_number.pickle","rb")
     file_number = pickle.load(pickle_in)
     updated_file_number = pickle.load(pickle_in)
 
@@ -33,13 +33,12 @@ def recordVoice():
         data = stream.read(CHUNK)
         data_chunk = array('h', data)
         vol = max(data_chunk)
-        if (vol >= 500):
-            print("something said")
+        if (vol >= 100):
             frames.append(data)
 
-        else:
-            print("nothing")
-        print("\n")
+        # else:
+        #     print("nothing")
+        # print("\n")
 
 
 
@@ -72,5 +71,7 @@ def recordVoice():
     wavfile.writeframes(b''.join(frames))  # append frames recorded to file
     wavfile.close()
     return recordVoice.FULL_FILE_NAME
+
+recordVoice()
 
 #recordVoice()
