@@ -33,7 +33,7 @@ def recordVoice():
         data = stream.read(CHUNK)
         data_chunk = array('h', data)
         vol = max(data_chunk)
-        if (vol >= 100):
+        if (vol >= 0):
             frames.append(data)
 
         # else:
@@ -58,7 +58,6 @@ def recordVoice():
     print(recordVoice.FULL_FILE_NAME)
     pickle_out.close()
 
-
     # end of recording
     stream.stop_stream()
     stream.close()
@@ -71,7 +70,5 @@ def recordVoice():
     wavfile.writeframes(b''.join(frames))  # append frames recorded to file
     wavfile.close()
     return recordVoice.FULL_FILE_NAME
-
-recordVoice()
 
 #recordVoice()

@@ -33,12 +33,12 @@ db.authenticate("admin", "admin")
 users = db.users
 
 #Azure Parameters that need to be filled with automatic goodness :)
-subscriptionKey = "4072c9afe00c4e3a85d8a744f694a8aa"
+subscriptionKey = "b51342b216294701b97755a73f959ba4"
 locale = "en-us"
 
 #Global Vars
 global numberOfTimesEnrolled
-numberOfTimesEnrolled = 3
+numberOfTimesEnrolled = 6
 global recordingAudio
 recordingAudio = False
 
@@ -55,10 +55,6 @@ def index():
 
 	else:
 		return render_template('index.html')
-
-
-
-
 
 # The Enrollment Page, where Audio gets recorded and processed
 @app.route('/enrollVoice', methods=['POST', 'GET'])
@@ -118,7 +114,7 @@ def enrollVoice():
 		#Enrolls Audio to Newly Created User
 		enroll_profile(subscriptionKey, CreateProfile.profileId, enrollmentFilePath, "false")
 		if numberOfTimesEnrolled == 1:
-			numberOfTimesEnrolled = 3
+			numberOfTimesEnrolled = 6
 			return redirect(url_for('enrollUserInfo'))
 		numberOfTimesEnrolled -= 1
 		print("numberOfTimesEnrolled = " + str(numberOfTimesEnrolled))

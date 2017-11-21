@@ -1,14 +1,10 @@
 """ Copyright (c) Microsoft. All rights reserved.
 Licensed under the MIT license.
-
 Microsoft Cognitive Services (formerly Project Oxford): https://www.microsoft.com/cognitive-services
-
 Microsoft Cognitive Services (formerly Project Oxford) GitHub:
 https://github.com/Microsoft/ProjectOxford-ClientSDK
-
 Copyright (c) Microsoft Corporation
 All rights reserved.
-
 MIT License:
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the
@@ -17,10 +13,8 @@ without limitation the rights to use, copy, modify, merge, publish,
 distribute, sublicense, and/or sell copies of the Software, and to
 permit persons to whom the Software is furnished to do so, subject to
 the following conditions:
-
 The above copyright notice and this permission notice shall be
 included in all copies or substantial portions of the Software.
-
 THE SOFTWARE IS PROVIDED ""AS IS"", WITHOUT WARRANTY OF ANY KIND,
 EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
@@ -29,13 +23,12 @@ LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
 OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 """
-# 138d9391-d3e7-4cfd-af40-e524417c1d26
+import uuid
 import IdentificationServiceHttpClientHelper
 import sys
 
 def identify_file(subscription_key, file_path, force_short_audio, profile_ids):
     """Identify an audio file on the server.
-
     Arguments:
     subscription_key -- the subscription key string
     file_path -- the audio file path for identification
@@ -47,10 +40,16 @@ def identify_file(subscription_key, file_path, force_short_audio, profile_ids):
 
     identification_response = helper.identify_file(
         file_path, profile_ids,
-        force_short_audio.lower() == "true")
+        str(force_short_audio).lower() == "true")
+
+    identify_file.identifiedSpeakerId = '{0}'.format(identification_response.get_identified_profile_id())
+    print('identifiedSpeakerId = ' + identify_file.identifiedSpeakerId)
 
     print('Confidence = {0}'.format(identification_response.get_confidence()))
 
+    return identify_file.identifiedSpeakerId
+
+"""
 if __name__ == "__main__":
     if len(sys.argv) < 5:
         print('Usage: python IdentifyFile.py <subscription_key> <identification_file_path>'
@@ -58,8 +57,16 @@ if __name__ == "__main__":
         print('\t<subscription_key> is the subscription key for the service')
         print('\t<identification_file_path> is the audio file path for identification')
         print('\t<force_short_audio> True/False waives the recommended minimum audio limit needed '
-              'for enrollment')
+            'for enrollment')
         print('\t<profile_ids> the profile IDs for the profiles to identify the audio from.')
         sys.exit('Error: Incorrect Usage.')
-
     identify_file(sys.argv[1], sys.argv[2], sys.argv[3], sys.argv[4:])
+"""
+
+
+# userID = ['ea262cdd-2402-4418-b698-0272e8873dc3']
+# print(userID)
+
+# identify_file('4072c9afe00c4e3a85d8a744f694a8aa','/Users/txt-19/Desktop/duckAi-py/duckRecognition/RECORDING1.wav', True, userID)
+
+    

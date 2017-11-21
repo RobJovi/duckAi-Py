@@ -14,13 +14,15 @@
 
 	<div id = "center">
 		<p id="step1">Click the Button to record your voice</p>
-		<p>Say, "Hey Duck, entering!"</p>
-
-
-
+		
+		<p>Say, "Hey Duck I'm entering!"</p>
 		<form method="post" onsubmit="setRecordingStatus()">
-				<input id="recordVoiceButton" type="submit" name="enrollVoice" value="">
+				<input id="recordVoiceButton" type="submit" name="enrollVoice" value="Click to Record">
+		</form>
 
+				<p>Say, "Hey Duck I'm Leaving!"</p>
+		<form method="post" onsubmit="setRecordingStatus()">
+				<input id="recordVoiceButton" type="submit" name="enrollVoice" value="Click to Record">
 		</form>
 
 		<p>{{numberOfTimesEnrolled}}</p>
