@@ -9,6 +9,6 @@ client = Client(account_sid, auth_token)
 def sendTrafficTextNotification(identifiedSpeaker):
 	client.messages.create(
 		to= "323-975-5330",
-		from_="+1 610-915-8882 ",
+		from_="+1 610-915-8882",
 		body=identifiedSpeaker
 	)

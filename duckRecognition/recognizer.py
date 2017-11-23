@@ -8,22 +8,35 @@ sys.path.append('../audioRecorder')
 from os import system
 import time
 from datetime import datetime
+userSpeech = ""
+
 # Azure
 from IdentificationServiceHttpClientHelper import *
 from IdentifyFile import *
+
 # Audio Recorder
 from recordVoice import *
+
 # Speech to Text
 import speech_recognition as sr
+
 # Test to Speech
 import pyttsx3
+
 # Audiofile to Text
 from audioTranscriber import *
+
 # SMS
 from send_sms import sendTrafficTextNotification
-# Make it send a text message of the log, so Oscar is at the cube at (time of arrival)
 
-userSpeech = ""
+# Traffic DB
+import pymongo
+connection = pymongo.MongoClient('ds119223.mlab.com', 19223)
+db = connection["cube-traffic"]
+db.authenticate("admin", "admin")
+# Defined the DB's Collection for Traffic
+traffic = db.traffic
+
 
 # Azure Subscription Key
 subscriptionKey = 'b51342b216294701b97755a73f959ba4'
@@ -67,7 +80,7 @@ def listen():
 			audioTranscripter(newFilePath)
 			
 			currentTime = "on " + str(datetime.now().strftime('%m-%d-%Y')) + " at " + str(datetime.now().strftime('%H:%M'))
-			allUserIds = ['a8363fca-7bc4-4b7b-b4da-673eacedc05d', '2e113a5a-161c-4cad-af96-c3e7b200adb4','53115c36-9984-460d-b944-246a59dbe071', '63f680c0-85c4-47d5-97b6-d4c4d4aa56d8']
+			allUserIds = ['a8363fca-7bc4-4b7b-b4da-673eacedc05d', '2e113a5a-161c-4cad-af96-c3e7b200adb4','53115c36-9984-460d-b944-246a59dbe071', '63f680c0-85c4-47d5-97b6-d4c4d4aa56d8', '1a842462-153b-4fb1-850c-ce613f81f191']
 
 
 			if str(audioTranscripter.speechRecognized) == None:
@@ -80,19 +93,30 @@ def listen():
 
 				# Based on the ID returned it assigns that ID to a specific person
 				if identify_file.identifiedSpeakerId == 'a8363fca-7bc4-4b7b-b4da-673eacedc05d':
-					identifiedSpeaker = 'Nabil'
+					identifiedSpeaker = 'Nabil Khalil'
 				elif identify_file.identifiedSpeakerId == '63f680c0-85c4-47d5-97b6-d4c4d4aa56d8':
-					identifiedSpeaker = 'Anthony'
+					identifiedSpeaker = 'Anthony Ramirez'
 				elif identify_file.identifiedSpeakerId == '2e113a5a-161c-4cad-af96-c3e7b200adb4':
-					identifiedSpeaker = 'Robert'
+					identifiedSpeaker = 'Roberto Sanchez'
 				elif identify_file.identifiedSpeakerId == '53115c36-9984-460d-b944-246a59dbe071':
-					identifiedSpeaker = 'Asarel'
+					identifiedSpeaker = 'Asarel Castellanos'
+				elif identify_file.identifiedSpeakerId == '1a842462-153b-4fb1-850c-ce613f81f191':
+					identifiedSpeaker = 'Citra Khalil'
 				else:
 					identifiedSpeaker = None
 
 				# Says welcome to the Identified Speaker
 				system("say Welcome" + identifiedSpeaker)
 				sendTrafficTextNotification(identifiedSpeaker + " came into the cube " + currentTime)
+
+				userData = {
+					"fullName":identifiedSpeaker,
+					"profileId":identify_file.identifiedSpeakerId,
+					"trafficQuery":"Entered",
+					"date": str(datetime.now().strftime('%m-%d-%Y')),
+					"time": str(datetime.now().strftime('%H:%M'))
+				}
+				db.traffic.insert(userData)
 				duckQueryInit = False
 
 			# Handles cases when the user says they're leaving	
@@ -102,19 +126,30 @@ def listen():
 
 				# Based on the ID returned it assigns that ID to a specific person
 				if identify_file.identifiedSpeakerId == 'a8363fca-7bc4-4b7b-b4da-673eacedc05d':
-					identifiedSpeaker = 'Nabil'
+					identifiedSpeaker = 'Nabil Khalil'
 				elif identify_file.identifiedSpeakerId == '63f680c0-85c4-47d5-97b6-d4c4d4aa56d8':
-					identifiedSpeaker = 'Anthony'
+					identifiedSpeaker = 'Anthony Ramirez'
 				elif identify_file.identifiedSpeakerId == '2e113a5a-161c-4cad-af96-c3e7b200adb4':
-					identifiedSpeaker = 'Robert'
+					identifiedSpeaker = 'Roberto Sanchez'
 				elif identify_file.identifiedSpeakerId == '53115c36-9984-460d-b944-246a59dbe071':
-					identifiedSpeaker = 'Asarel'
+					identifiedSpeaker = 'Asarel Castellanos'
+				elif identify_file.identifiedSpeakerId == '1a842462-153b-4fb1-850c-ce613f81f191':
+					identifiedSpeaker = 'Citra Khalil'
 				else:
 					identifiedSpeaker = None
 
 				# Says good bye to the Identified Speaker
 				system("say Goodbye "+identifiedSpeaker)
 				sendTrafficTextNotification(identifiedSpeaker + " left the cube " + currentTime)
+
+				userData = {
+					"fullName":identifiedSpeaker,
+					"profileId":identify_file.identifiedSpeakerId,
+					"trafficQuery":"Left",
+					"date": str(datetime.now().strftime('%m-%d-%Y')),
+					"time": str(datetime.now().strftime('%H:%M'))
+				}
+				db.traffic.insert(userData)
 				duckQueryInit = False
 
 
