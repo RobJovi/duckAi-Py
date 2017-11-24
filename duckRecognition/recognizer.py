@@ -34,9 +34,9 @@ import pymongo
 connection = pymongo.MongoClient('ds119223.mlab.com', 19223)
 db = connection["cube-traffic"]
 db.authenticate("admin", "admin")
+
 # Defined the DB's Collection for Traffic
 traffic = db.traffic
-
 
 # Azure Subscription Key
 subscriptionKey = 'b51342b216294701b97755a73f959ba4'
@@ -65,6 +65,11 @@ def listen():
 			print("You said: " + r.recognize_google(audio))
 			userSpeech = r.recognize_google(audio)
 
+			if "Goodbye Duck" in userSpeech:
+				system('say Goodybye human')
+			elif "Bye Duck" in userSpeech:
+				system('say Goodybye human')
+
 			if "Hey Duck" in userSpeech:
 				duckQueryInit = True
 				system('say Hello, are you entering or leaving')
@@ -72,6 +77,26 @@ def listen():
 		# Look for a audio file to text converter, you send the audio file to a funciton and it outputs text
 		
 		while duckQueryInit:
+
+			now = datetime.now()
+
+			# Converts standard time, so that it's not in military time and defines whether it's AM or PM
+			if now.hour >= 13:
+				hour = str(now.hour - 12)
+				meridiem = "PM"
+			elif now.hour == 0:
+				hour = str(now.hour + 1)
+				meridiem = "AM"
+			else:
+				hour = str(now.hou)
+				meridiem = "AM"
+
+			date = str(datetime.now().strftime('%m-%d-%Y'))
+
+			minute = str(now.minute)
+
+			clockTime = hour + ":" + minute + " " + meridiem
+
 			print("Recording Audio...")
 			recordVoice()
 			print("Done Recording!")
@@ -79,7 +104,7 @@ def listen():
 			print(newFilePath)
 			audioTranscripter(newFilePath)
 			
-			currentTime = "on " + str(datetime.now().strftime('%m-%d-%Y')) + " at " + str(datetime.now().strftime('%H:%M'))
+			logSmsTime = "on " + date + " at " + clockTime
 			allUserIds = ['a8363fca-7bc4-4b7b-b4da-673eacedc05d', '2e113a5a-161c-4cad-af96-c3e7b200adb4','53115c36-9984-460d-b944-246a59dbe071', '63f680c0-85c4-47d5-97b6-d4c4d4aa56d8', '1a842462-153b-4fb1-850c-ce613f81f191']
 
 
@@ -107,14 +132,14 @@ def listen():
 
 				# Says welcome to the Identified Speaker
 				system("say Welcome" + identifiedSpeaker)
-				sendTrafficTextNotification(identifiedSpeaker + " came into the cube " + currentTime)
+				sendTrafficTextNotification(identifiedSpeaker + " came into the cube " + logSmsTime)
 
 				userData = {
 					"fullName":identifiedSpeaker,
 					"profileId":identify_file.identifiedSpeakerId,
 					"trafficQuery":"Entered",
-					"date": str(datetime.now().strftime('%m-%d-%Y')),
-					"time": str(datetime.now().strftime('%H:%M'))
+					"date": date,
+					"time": clockTime
 				}
 				db.traffic.insert(userData)
 				duckQueryInit = False
@@ -140,14 +165,14 @@ def listen():
 
 				# Says good bye to the Identified Speaker
 				system("say Goodbye "+identifiedSpeaker)
-				sendTrafficTextNotification(identifiedSpeaker + " left the cube " + currentTime)
+				sendTrafficTextNotification(identifiedSpeaker + " left the cube " + logSmsTime)
 
 				userData = {
 					"fullName":identifiedSpeaker,
 					"profileId":identify_file.identifiedSpeakerId,
 					"trafficQuery":"Left",
-					"date": str(datetime.now().strftime('%m-%d-%Y')),
-					"time": str(datetime.now().strftime('%H:%M'))
+					"date": date,
+					"time": clockTime
 				}
 				db.traffic.insert(userData)
 				duckQueryInit = False
