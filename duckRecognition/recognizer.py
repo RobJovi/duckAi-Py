@@ -37,6 +37,11 @@ db.authenticate("admin", "admin")
 
 # Defined the DB's Collection for Traffic
 traffic = db.traffic
+userProfiles = db.users
+
+# Good for getting names but not good for getting profileIds
+allUserIds = []
+users = []
 
 # Azure Subscription Key
 subscriptionKey = 'b51342b216294701b97755a73f959ba4'
@@ -69,8 +74,19 @@ def listen():
 				system('say Goodybye human')
 			elif "Bye Duck" in userSpeech:
 				system('say Goodybye human')
+			elif "Shut up duck" in userSpeech:
+				system("Well that's rude")
 
 			if "Hey Duck" in userSpeech:
+				duckQueryInit = True
+				system('say Hello, are you entering or leaving')
+			elif "hey duck" in userSpeech:
+				duckQueryInit = True
+				system('say Hello, are you entering or leaving')
+			elif "Hey Doug" in userSpeech:
+				duckQueryInit = True
+				system('say Hello, are you entering or leaving')
+			elif "hey doug" in userSpeech:
 				duckQueryInit = True
 				system('say Hello, are you entering or leaving')
 
@@ -105,34 +121,33 @@ def listen():
 			audioTranscripter(newFilePath)
 			
 			logSmsTime = "on " + date + " at " + clockTime
-			allUserIds = ['a8363fca-7bc4-4b7b-b4da-673eacedc05d', '2e113a5a-161c-4cad-af96-c3e7b200adb4','53115c36-9984-460d-b944-246a59dbe071', '63f680c0-85c4-47d5-97b6-d4c4d4aa56d8', '1a842462-153b-4fb1-850c-ce613f81f191']
+			
+
+			for user in userProfiles.find():
+				userIds = user['profileId']
+				allUserIds.append(userIds)
+			# for user in userProfiles.find():
+			# 	user.append('allUserIds')
 
 
-			if str(audioTranscripter.speechRecognized) == None:
-				system("say Sorry, I didn't get that?")
 
 			# Handles cases when the user says they're entering	
-			elif "I'm entering" in str(audioTranscripter.speechRecognized):
+			if "I'm entering" in str(audioTranscripter.speechRecognized):
 
 				identify_file(subscriptionKey, newFilePath, True, allUserIds)
 
 				# Based on the ID returned it assigns that ID to a specific person
-				if identify_file.identifiedSpeakerId == 'a8363fca-7bc4-4b7b-b4da-673eacedc05d':
-					identifiedSpeaker = 'Nabil Khalil'
-				elif identify_file.identifiedSpeakerId == '63f680c0-85c4-47d5-97b6-d4c4d4aa56d8':
-					identifiedSpeaker = 'Anthony Ramirez'
-				elif identify_file.identifiedSpeakerId == '2e113a5a-161c-4cad-af96-c3e7b200adb4':
-					identifiedSpeaker = 'Roberto Sanchez'
-				elif identify_file.identifiedSpeakerId == '53115c36-9984-460d-b944-246a59dbe071':
-					identifiedSpeaker = 'Asarel Castellanos'
-				elif identify_file.identifiedSpeakerId == '1a842462-153b-4fb1-850c-ce613f81f191':
-					identifiedSpeaker = 'Citra Khalil'
-				else:
-					identifiedSpeaker = None
+				for user in userProfiles.find({'profileId':identify_file.identifiedSpeakerId}):
+					identifiedSpeaker = user['fullName']
+					print("Identified Speaker = " + identifiedSpeaker)
+
+				for user in userProfiles.find({'profileId':identify_file.identifiedSpeakerId}):
+					parentPhoneNumber = user['parentPhoneNumber']
+					print("parentPhoneNumber = " + parentPhoneNumber)
 
 				# Says welcome to the Identified Speaker
 				system("say Welcome" + identifiedSpeaker)
-				sendTrafficTextNotification(identifiedSpeaker + " came into the cube " + logSmsTime)
+				sendTrafficTextNotification(identifiedSpeaker + " came into the cube " + logSmsTime, parentPhoneNumber)
 
 				userData = {
 					"fullName":identifiedSpeaker,
@@ -150,18 +165,9 @@ def listen():
 				identify_file(subscriptionKey, newFilePath, True, allUserIds)
 
 				# Based on the ID returned it assigns that ID to a specific person
-				if identify_file.identifiedSpeakerId == 'a8363fca-7bc4-4b7b-b4da-673eacedc05d':
-					identifiedSpeaker = 'Nabil Khalil'
-				elif identify_file.identifiedSpeakerId == '63f680c0-85c4-47d5-97b6-d4c4d4aa56d8':
-					identifiedSpeaker = 'Anthony Ramirez'
-				elif identify_file.identifiedSpeakerId == '2e113a5a-161c-4cad-af96-c3e7b200adb4':
-					identifiedSpeaker = 'Roberto Sanchez'
-				elif identify_file.identifiedSpeakerId == '53115c36-9984-460d-b944-246a59dbe071':
-					identifiedSpeaker = 'Asarel Castellanos'
-				elif identify_file.identifiedSpeakerId == '1a842462-153b-4fb1-850c-ce613f81f191':
-					identifiedSpeaker = 'Citra Khalil'
-				else:
-					identifiedSpeaker = None
+				for user in userProfiles.find({'profileId':identify_file.identifiedSpeakerId}):
+					identifiedSpeaker = user['fullName']
+					print("Identified Speaker = " + identifiedSpeaker)
 
 				# Says good bye to the Identified Speaker
 				system("say Goodbye "+identifiedSpeaker)
