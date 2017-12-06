@@ -51,6 +51,8 @@ CreateProfile = CreateProfile(profileId)
 def index():
 	if 'beginEnrollment' in request.form:
 		CreateProfile.create_profile(subscriptionKey, locale)
+		global numberOfTimesEnrolled
+		numberOfTimesEnrolled = 6
 		return redirect(url_for('enrollVoice'))
 
 	else:
@@ -143,6 +145,8 @@ def enrollUserInfo():
 	if 'enrollUserInfo' in request.form:
 		firstName = request.form['first-name']
 		lastName = request.form['last-name']
+		parentPhoneNumber = request.form['phone-number']
+		emailAddress = request.form['email-address']
 
 		fullName = firstName + " " + lastName
 		sendForm = True
@@ -152,6 +156,8 @@ def enrollUserInfo():
 		userData = {
 			"fullName":fullName,
 			"profileId":CreateProfile.profileId,
+			"emailAddress": emailAddress,
+			"parentPhoneNumber":parentPhoneNumber,
 			"dateCreated": date
 		}
 		db.users.insert(userData)

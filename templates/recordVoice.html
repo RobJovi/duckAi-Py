@@ -15,15 +15,19 @@
 	<div id = "center">
 		<p id="step1">Click the Button to record your voice</p>
 		
-		<p>Say, "Hey Duck I'm entering!"</p>
-		<form method="post" onsubmit="setRecordingStatus()">
-				<input id="recordVoiceButton" type="submit" name="enrollVoice" value="Click to Record">
+		<p>Directions: Record your voice saying, "Hey Duck I'm Entering" 3 times. After that record your voice saying "Hey Duck I'm Leaving" 3 times. Once you're one you'll be redirected to the final step :) </p>
+
+		<p>Say, "Hey Duck I'm Entering!"</p>
+		<form id="enteringEnrollmentForm" method="post" onsubmit="setRecordingStatus()">
+				<input id="recordVoiceButton" type="submit" name="enrollVoice" value="Click to Record" >
 		</form>
 
-				<p>Say, "Hey Duck I'm Leaving!"</p>
+		
+		<p>Say, "Hey Duck I'm Leaving!"</p>
 		<form method="post" onsubmit="setRecordingStatus()">
 				<input id="recordVoiceButton" type="submit" name="enrollVoice" value="Click to Record">
 		</form>
+	
 
 		<p>{{numberOfTimesEnrolled}}</p>
 
@@ -42,21 +46,21 @@
 	<script type="text/javascript" src="{{url_for('static', filename='script.js')}}"></script>
 	
 	<script type="text/javascript">
-
+		var numberOfTimesEnrolled = 6
 		var demo = String({{data.recordingAudio}});
 		console.log(demo);
 		var recordingStatus = document.getElementById('recordingStatus');
 
-
-		function resetRecordingStatus(){
+		window.onload = function(){ 
 			recordingStatus.innerHTML = "Not Recording..."
 			console.log(recordingStatus)
 		}
 
 		function setRecordingStatus(){
+
 			recordingStatus.innerHTML = "Recording..."
 			console.log(recordingStatus)
-			setTimeout(resetRecordingStatus, 7000)
+
 		}
 
 	</script>

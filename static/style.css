@@ -3,6 +3,9 @@
 body{
 	font-family: 'Comfortaa', cursive;
 	margin: 0;
+	background: linear-gradient( rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.1) ), url("duck-model.png");
+
+	background-size: cover;
 }
 
 
@@ -15,6 +18,10 @@ h1{
 	text-align: center;
 }
 
+#recordingStatus{
+	text-align: center;
+	color: red;
+}
 
 h3{
 	text-align: center;

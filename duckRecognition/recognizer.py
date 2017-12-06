@@ -79,7 +79,7 @@ def listen():
 
 			if "Hey Duck" in userSpeech:
 				duckQueryInit = True
-				system('say Hello, are you entering or leaving')
+				system("say Hello, say hey duck i'm entering. or say hey duck i'm leaving")
 			elif "hey duck" in userSpeech:
 				duckQueryInit = True
 				system('say Hello, are you entering or leaving')
@@ -101,10 +101,10 @@ def listen():
 				hour = str(now.hour - 12)
 				meridiem = "PM"
 			elif now.hour == 0:
-				hour = str(now.hour + 1)
+				hour = str(12)
 				meridiem = "AM"
 			else:
-				hour = str(now.hou)
+				hour = str(now.hour)
 				meridiem = "AM"
 
 			date = str(datetime.now().strftime('%m-%d-%Y'))
@@ -130,9 +130,11 @@ def listen():
 			# 	user.append('allUserIds')
 
 
-
+			identifiedSpeaker = ""
 			# Handles cases when the user says they're entering	
 			if "I'm entering" in str(audioTranscripter.speechRecognized):
+				
+				system('say Processing your input...')
 
 				identify_file(subscriptionKey, newFilePath, True, allUserIds)
 
@@ -161,6 +163,8 @@ def listen():
 
 			# Handles cases when the user says they're leaving	
 			elif "I'm leaving" in str(audioTranscripter.speechRecognized):
+
+				system('say currently processing your input please wait...')
 				
 				identify_file(subscriptionKey, newFilePath, True, allUserIds)
 
@@ -169,9 +173,14 @@ def listen():
 					identifiedSpeaker = user['fullName']
 					print("Identified Speaker = " + identifiedSpeaker)
 
+				for user in userProfiles.find({'profileId':identify_file.identifiedSpeakerId}):
+					parentPhoneNumber = user['parentPhoneNumber']
+					print("parentPhoneNumber = " + parentPhoneNumber)
+
 				# Says good bye to the Identified Speaker
 				system("say Goodbye "+identifiedSpeaker)
-				sendTrafficTextNotification(identifiedSpeaker + " left the cube " + logSmsTime)
+				duckQueryInit = False
+				sendTrafficTextNotification(identifiedSpeaker + " came into the cube " + logSmsTime, parentPhoneNumber)
 
 				userData = {
 					"fullName":identifiedSpeaker,
@@ -181,7 +190,12 @@ def listen():
 					"time": clockTime
 				}
 				db.traffic.insert(userData)
-				duckQueryInit = False
+			else:
+				system("say say Hey Duck I'm Entering or Hey Duck I'm Leaving")
+
+			
+
+				
 
 
 	except sr.UnknownValueError:

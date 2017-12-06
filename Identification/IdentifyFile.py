@@ -64,9 +64,4 @@ if __name__ == "__main__":
 """
 
 
-userID = ['a8363fca-7bc4-4b7b-b4da-673eacedc05d','a8363fca-7bc4-4b7b-b4da-673eacedc05d','a8363fca-7bc4-4b7b-b4da-673eacedc05d','a8363fca-7bc4-4b7b-b4da-673eacedc05d','a8363fca-7bc4-4b7b-b4da-673eacedc05d','a8363fca-7bc4-4b7b-b4da-673eacedc05d','a8363fca-7bc4-4b7b-b4da-673eacedc05d','a8363fca-7bc4-4b7b-b4da-673eacedc05d','a8363fca-7bc4-4b7b-b4da-673eacedc05d','a8363fca-7bc4-4b7b-b4da-673eacedc05d','a8363fca-7bc4-4b7b-b4da-673eacedc05d']
-print(userID)
-
-identify_file('f48ecfec-4d39-4b19-bc33-beeed900644f','/Users/txt-19/Desktop/duckAi-py/duckRecognition/RECORDING1.wav', True, userID)
-
     
